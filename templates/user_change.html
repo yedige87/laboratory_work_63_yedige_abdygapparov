@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Редактировать пользователя{% endblock %}
+{% block menu_links %}
+    <li><a href="{% url 'profile' user.pk %}">Назад</a></li>
+    <li><a href="#">Смена пароля</a></li>
+{% endblock %}
+{% block content %}
+    <h3>Поменять личные данные пользователя {{user.full_name}}</h3>
+    <form action="{% url 'user_change' user.pk %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% include 'partial/form.html' with form=form fields_only=True %}
+        <br>
+        <input type="submit" value="Редактировать">
+    </form>
+{% endblock %}

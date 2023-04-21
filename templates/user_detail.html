@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Пользователь{% endblock %}
+
+{% block menu %}
+    {% if prof_user.id == user.id %}
+    <li><a href="{% url 'post_add' %}" class="btn btn-primary">Создать Пост</a></li>
+    <li><a href="{% url 'user_change' user.pk %}" class="btn btn-primary">Редактировать</a></li>
+    <li><a href="{% url 'change_password' user.pk %}" class="btn btn-primary">Смена пароля</a></li>
+    {% endif %}
+    <li>Вы: "{{ user.full_name }}"</li>
+{% endblock %}
+
+{% block content %}
+    <h3>Личная страница пользователя - "{{ prof_user.full_name }}"
+        {% if prof_user.id != user.id %}
+            {% if not prof_user in user.subscriptions.all %}
+                <a href="{% url 'subsribe' prof_user.id %}" class="btn btn-success">Подписаться</a>
+            {% else %}
+                <a href="{% url 'unsubsribe' prof_user.id %}" class="btn btn-danger">Отписаться</a>
+            {% endif %}
+        {% endif %}
+    </h3>
+    <div class="usinf">
+        {% if prof_user.avatar %}
+            <img class="avatar" src="/uploads/{{ prof_user.avatar }}" width="auto" height="200" alt="user picture">
+        {% endif %}
+        <div class="usdata">
+    <br/><b>Почта:</b> {{ prof_user.email }}
+    <br/><b>Информация:</b> {{ prof_user.user_info }}
+    <br/><b>Телефон:</b> {{ prof_user.phone }}
+    <br/><b>Пол:</b>
+                {% for choice in choices %}
+                    {% if choice.0 == prof_user.gender %}
+                        <span> {{ choice.1 }}</span>
+                    {% endif %}
+                {% endfor %}
+    <br/><b>Подписки ({{prof_user.subscriptions.all.count}}) на:</b>
+    {% for item in prof_user.subscriptions.all %}
+        <span><a href="{% url 'profile' item.id %}"> {{ item }}</a>,</span>
+    {% endfor %}
+    <br/><b>Подписчики ({{prof_user.subscribers.all.count}}) :</b>
+    {% for item in prof_user.subscribers.all %}
+        <span><a href="{% url 'profile' item.id %}"> {{ item }}</a>,</span>
+    {% endfor %}
+    <br/><b>Мои посты ({{prof_user.posts.all.count}}): </b><br/>
+       </div>
+    </div>
+    <br/>
+    <h3>Мои посты: </h3>
+    {% for item in prof_user.posts.all %}
+        <a href="{% url 'post_detail' item.id %}"><img class="post_img" src="/uploads/{{ item.image }}" width="auto" height="200" alt="post picture"></a>
+    {% endfor %} <br/> <br/>
+{% endblock %}

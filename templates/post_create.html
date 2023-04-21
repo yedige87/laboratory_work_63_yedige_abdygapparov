@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Post Create{% endblock %}
+{% block content %}
+    <h3>Новый Пост</h3>
+    <h3>Автор поста - "{{ user.full_name }}" </h3>
+<div class="form">
+    <form action="{% url 'post_add' %}" method="post">
+  {% include 'partial/post_form.html' with button_text='Создать' %}
+    </form>
+</div>
+{% endblock %}

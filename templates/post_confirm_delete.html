@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% block title %}Post confirm delete{% endblock %}
+{% block menu %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1>Вы точно хотите удалить пост?</h1>
+    <p>Автор: {{ post.author }}</p>
+    <p>Текст: {{ post.description }}</p>
+        <form action="{% url 'confirm_delete' post.pk %}" method="post">
+            {% csrf_token %}
+            <p><input type="submit" value="Удалить"></p>
+            <p><a href="{% url 'home' %}" class="btn btn-primary">Отмена</a></p>
+        </form>
+    </div>
+{% endblock %}

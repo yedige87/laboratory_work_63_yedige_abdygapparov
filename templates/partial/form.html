@@ -1,0 +1,29 @@
+{% load django_bootstrap5 %}
+
+{% if not fields_only %}
+<form action="{{ action_url }}" method="{{ form_method }}" enctype="{{ enctype }}">
+    {% csrf_token %}
+    {% endif %}
+    {% for error in form.non_field_errors %}
+    <p class="error">{{ error }}</p>
+    {% endfor %}
+    <div>
+        {% for field in form %}
+        <div class="form-group">
+            {{field.label_tag}}
+            <div>{{field}}</div>
+            {% if field.errors%}
+            {% for error in field.errors %}
+            <div class="alert alert-danger">
+                {{error}}
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% if not fields_only %}
+    <br/>
+    <input type="submit" value="{{ button_text|default:'Submit' }}"/>
+</form>
+{% endif %}
